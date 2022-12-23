@@ -11,7 +11,9 @@ const state = () => ({
   partialRoutes: [],
 })
 const getters = {
-  routes: (state) => state.routes,
+  routes: (state) => {
+    return state.routes
+  },
   partialRoutes: (state) => state.partialRoutes,
 }
 const mutations = {
@@ -30,7 +32,11 @@ const actions = {
    * @returns
    */
   async setRoutes({ commit }) {
+    console.log('设置路由菜单--setRoutes')
+    // 整合所有的路由
     const finallyRoutes = filterRoutes([...constantRoutes, ...asyncRoutes])
+
+    // 执行设置路由方法 提交路由参数
     commit('setRoutes', finallyRoutes)
     return [...asyncRoutes]
   },
@@ -42,6 +48,7 @@ const actions = {
    */
   async setAllRoutes({ commit }) {
     let { data } = await getRouterList()
+    console.log('设置路由菜单',data);
     if (data[data.length - 1].path !== '*')
       data.push({ path: '*', redirect: '/404', hidden: true })
     const asyncRoutes = convertRouter(data)
@@ -56,6 +63,7 @@ const actions = {
    * @param accessedRoutes 画廊布局、综合布局设置路由
    */
   setPartialRoutes({ commit }, accessedRoutes) {
+    console.log('setPartialRoutes')
     commit('setPartialRoutes', accessedRoutes)
   },
 }

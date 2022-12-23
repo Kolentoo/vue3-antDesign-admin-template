@@ -5,6 +5,7 @@
       class="vab-mask"
       @click="handleFoldSideBar"
     ></div>
+    <!-- 左侧菜单栏 -->
     <a-layout-sider
       collapsible
       class="vab-sider"
@@ -24,6 +25,8 @@
         <vab-menu v-for="route in routes" :key="route.path" :item="route" />
       </a-menu>
     </a-layout-sider>
+
+    <!-- 右侧内容 -->
     <a-layout
       class="vab-layout"
       :class="'mobile' === device ? 'vab-mobile-layout' : ''"
@@ -108,7 +111,8 @@
       window.removeEventListener('resize', this.handleLayouts)
     },
     mounted() {
-      this.handleLayouts()
+      this.handleLayouts();
+      console.log('routes',this.routes);
     },
     methods: {
       ...mapActions({

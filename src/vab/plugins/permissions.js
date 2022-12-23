@@ -12,6 +12,8 @@ import {
   routesWhiteList,
 } from '@/config'
 
+console.log('authentication',authentication);
+
 router.beforeEach(async (to, from, next) => {
   let hasToken = store.getters['user/accessToken']
 
@@ -38,6 +40,7 @@ router.beforeEach(async (to, from, next) => {
 
           let accessRoutes = []
           if (authentication === 'intelligence') {
+            console.log('ininin')
             accessRoutes = await store.dispatch('routes/setRoutes')
           } else if (authentication === 'all') {
             accessRoutes = await store.dispatch('routes/setAllRoutes')

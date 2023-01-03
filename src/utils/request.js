@@ -79,21 +79,19 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     if (loadingInstance) loadingInstance.close()
-
-    const { data, config } = response
-    const { code, msg } = data
+    const { data, config, status } = response
     // 操作正常Code数组
     const codeVerificationArray = isArray(successCode)
       ? [...successCode]
       : [...[successCode]]
     // 是否操作正常
-    if (codeVerificationArray.includes(code)) {
+    if (codeVerificationArray.includes(status)) {
       return data
     } else {
-      handleCode(code, msg)
+      handleCode(status, msg)
       return Promise.reject(
         '请求异常拦截:' +
-          JSON.stringify({ url: config.url, code, msg }) || 'Error'
+          JSON.stringify({ url: config.url, status, msg }) || 'Error'
       )
     }
   },

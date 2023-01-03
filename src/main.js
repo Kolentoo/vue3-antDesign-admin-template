@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 import 'ant-design-vue/dist/antd.css'
 import '@/vab'
+
 /**
  * @author kolento
  * @description 正式环境默认使用mock，正式项目记得注释后再打包

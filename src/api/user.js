@@ -1,13 +1,29 @@
 import request from '@/utils/request'
 import { tokenName } from '@/config'
+import { loginRSA } from '@/config'
 
-export async function login(data) {
+export async function codeURL(data) {
   return request({
-    url: '/login',
-    method: 'post',
-    data,
+      url: '/api/session/kaptcha',
+      method: 'get',
+      data,
   })
 }
+
+export async function login(data) {
+  // 是否开启RSA加密 默认FALSE
+  if (loginRSA) {
+      data = await encryptedData(data)
+  }
+  return request({
+      url: '/api/session/login',
+      method: 'post',
+      data,
+  })
+}
+
+
+
 
 export async function socialLogin(data) {
   return request({

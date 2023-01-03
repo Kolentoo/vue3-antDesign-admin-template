@@ -50,7 +50,7 @@
           </a-col>
         </a-row>
       </a-layout-header>
-      <vab-tabs />
+      <!-- <vab-tabs /> -->
       <vab-content />
     </a-layout>
   </a-layout>

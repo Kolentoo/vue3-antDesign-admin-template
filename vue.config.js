@@ -4,7 +4,7 @@
  */
 const path = require('path')
 const {
-  /* baseURL, */
+  baseURL,
   publicPath,
   assetsDir,
   outputDir,
@@ -60,16 +60,16 @@ module.exports = {
       errors: true,
     },
     // 注释掉的地方是前端配置代理访问后端的示例
-    // proxy: {
-    //   [baseURL]: {
-    //     target: `http://你的后端接口地址`,
-    //     ws: true,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       ["^/" + baseURL]: "",
-    //     },
-    //   },
-    // },
+    proxy: {
+      [baseURL]: {
+        target: `http://192.168.166.14:9993`,
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          ["^/" + baseURL]: "",
+        },
+      },
+    },
     after: mockServer(),
   },
   configureWebpack() {

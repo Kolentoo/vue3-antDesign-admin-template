@@ -41,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
           let accessRoutes = []
           if (authentication === 'intelligence') {
             console.log('ininin')
-            accessRoutes = await store.dispatch('routes/setRoutes')
+            accessRoutes = await store.dispatch('routes/setRoutes',authentication)
           } else if (authentication === 'all') {
             accessRoutes = await store.dispatch('routes/setAllRoutes')
           }

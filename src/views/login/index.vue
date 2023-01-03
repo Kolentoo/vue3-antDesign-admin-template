@@ -104,7 +104,8 @@
       this.getCodeURL();
     },  
     mounted() {
-
+      this.form.username='15026753453';
+      this.form.password='123456'
     },
     methods: {
       ...mapActions({
@@ -121,6 +122,7 @@
         this.form.password = new Buffer(this.form.password).toString('base64');
         await this.login(this.form);
         await this.$router.push(this.handleRoute())
+        // this.$router.push('/')
       },
       randomCaptchaId() {
         // 生成随机码

@@ -2,7 +2,7 @@
  * @author kolento
  * @description 登录、获取用户信息、退出登录、清除accessToken逻辑，不建议修改
  */
-import { getUserInfo, login, logout } from '@/api/user'
+import { getUserData, login, logout } from '@/api/user'
 import {
   getAccessToken,
   removeAccessToken,
@@ -77,8 +77,8 @@ const actions = {
       commit('setAccessToken', accessToken)
 
       notification.open({
-        message: `欢迎登录${title}`,
-        description: ``,
+        message: `登录成功`,
+        description: `欢迎使用${title}`,
       })
     } else {
       message.error(`登录接口异常，未正确返回${tokenName}...`)
@@ -91,9 +91,11 @@ const actions = {
    * @returns
    */
   async getUserInfo({ commit, dispatch, state }) {
-    const { data } = await getUserInfo(state.accessToken)
+    console.log('getUserInfo');
+    const { data } = await getUserData(state.accessToken)
+    console.log('data1234',data);
     if (!data) {
-      message.error(`验证失败，请重新登录...`)
+      // message.error(`验证失败，请重新登录...`)
       return false
     }
     let { username, avatar, roles, ability } = data

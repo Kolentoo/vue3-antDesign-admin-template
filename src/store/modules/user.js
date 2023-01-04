@@ -69,11 +69,10 @@ const actions = {
    * @param {*} userInfo
    */
   async login({ commit }, userInfo) {
-
+    console.log('调用登录接口')
     const { data } = await login(userInfo)
-    console.log('datadatadata',data)
     const accessToken = data['token'];
-
+    console.log('登录接口调用完成');
     if (accessToken) {
       commit('setAccessToken', accessToken)
 
@@ -95,11 +94,10 @@ const actions = {
     const result = await getUserData(state.accessToken)
     console.log('resultresult',result);
     console.log('resultresult',result.data);
-    // if (!data) {
-    //   message.error(`验证失败，请重新登录...`)
-    //   return false
-    // }
-    console.log(22223333)
+    if (!result.data) {
+      message.error(`验证失败，请重新登录`)
+      return false
+    }
     let { username, avatar, roles, ability } = result.data
     console.log('roles',roles)
     if (username && roles && Array.isArray(roles)) {

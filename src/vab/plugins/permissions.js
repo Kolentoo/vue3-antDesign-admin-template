@@ -31,20 +31,17 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          console.log(1111)
           if (loginInterception) {
             await store.dispatch('user/getUserInfo')
           } else {
             //loginInterception为false（关闭登录拦截时）时，创建虚拟角色
             await store.dispatch('user/setVirtualRoles')
           }
-          console.log(2222)
           let accessRoutes = []
           if (authentication === 'intelligence') {
             console.log('ininin')
             accessRoutes = await store.dispatch('routes/setRoutes')
           } else if (authentication === 'all') {
-            console.log(333)
             accessRoutes = await store.dispatch('routes/setAllRoutes')
           }
           console.log('accessRoutes',accessRoutes);

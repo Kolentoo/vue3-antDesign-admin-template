@@ -39,7 +39,7 @@
                 </template>
               </a-input>
               <div class="pic-code">
-                <img v-if="showPic" class="code" :src="codeSrc" @click="getCodeURL" alt="" />
+                <img v-if="showPic" class="code" :src="codeURL" @click="getCodeURL" alt="" />
               </div>
 
             </a-form-item>
@@ -59,94 +59,112 @@
     </a-row>
   </div>
 </template>
-<script setup>
-  import {reactive,ref,computed,onMounted} from 'vue';
-  import {useStore} from 'vuex';
+<script>
+  import { dependencies, devDependencies } from '*/package.json'
+  import { mapActions, mapGetters } from 'vuex'
   import { UserOutlined, LockOutlined,VerifiedOutlined } from '@ant-design/icons-vue'
   import { codeURL } from '@/api/user'
-  import { useRoute, useRouter } from 'vue-router'
-  import store from '@/store'
 
-  const route = useRoute()
-  const router = useRouter()
-  console.log('route',route)
-  console.log('router',router);
-
-  // 登录表单数据
-  const form = reactive({
-    useranme:'',
-    password:'',
-    captchaId:''
-  })
-
-  form.username = '15026753453';
-  form.password = '123456'
-  const codeSrc = ref('');
-  const showPic = ref('');
-
-  // 获取用户信息
-  const logo = ref('');
-  const title = ref('');
-  console.log('store',store);
-  title.value = store.getters['settings/title'];
-  logo.value = store.getters['settings/logo'];
-
-  // 表单验证
-  let validatePass = async (_rule, value) => {
-    if (value === '') {
-      return Promise.reject('Please input the password');
-    } else {
-      if (formState.checkPass !== '') {
-        formRef.value.validateFields('checkPass');
+  export default {
+    name: 'Login',
+    components: {
+      UserOutlined,
+      LockOutlined,
+      VerifiedOutlined,
+    },
+    data() {
+      // let validateUsername = async (_rule, value) => {
+      //   if (value === '') {
+      //     return Promise.reject('Please input the password');
+      //   } else {
+      //     if (formState.checkPass !== '') {
+      //       formRef.value.validateFields('checkPass');
+      //     }
+      //     return Promise.resolve();
+      //   }
+      // };
+      return {
+        form: {
+          username: '',
+          password: '',
+          captchaId:''
+        },
+        redirect: undefined,
+        dependencies: dependencies,
+        devDependencies: devDependencies,
+        codeUrl:'',
+        showPic:false,
+        loginRules:{
+          username: [{
+            required: true,
+            validator: validateUsername,
+            trigger: 'change',
+          }],
+          password: [{
+            validator: validatePass2,
+            trigger: 'change',
+          }],
+          captchaId: [{
+            validator: checkAge,
+            trigger: 'change',
+          }],
+        }
       }
-      return Promise.resolve();
-    }
-  };
+    },
+    computed: {
+      ...mapGetters({
+        logo: 'settings/logo',
+        title: 'settings/title',
+      }),
+    },
+    watch: {
+      $route: {
+        handler(route) {
+          this.redirect = (route.query && route.query.redirect) || '/'
+        },
+        immediate: true,
+      },
+    },
+    created(){
+      this.getCodeURL();
+    },  
+    mounted() {
+      this.form.username='15026753453';
+      this.form.password='123456'
 
-  const rules = {
-    pass: [{
-      required: true,
-      validator: validatePass,
-      trigger: 'change',
-    }],
-    checkPass: [{
-      validator: validatePass,
-      trigger: 'change',
-    }],
-    age: [{
-      validator: validatePass,
-      trigger: 'change',
-    }],
-  };
-
-  // 生命周期
-  onMounted(()=>{
-    getCodeURL();
-  })
-
-  const handleSubmit = async() =>{
-    // 执行登录
-    console.log('执行登录');
-    form.password = new Buffer(form.password).toString('base64');
-    await store.dispatch('user/login',form);
-    // 路由跳转
-    router.push('/')
+      console.log('this.redirect',this.redirect);
+    },
+    methods: {
+      ...mapActions({
+        login: 'user/login',
+      }),
+      handleRoute() {
+        // 路由控制
+        return this.redirect === '/404' || this.redirect === '/403'
+          ? '/'
+          : this.redirect
+      },
+      async handleSubmit(){
+        //  执行登录
+        this.form.password = new Buffer(this.form.password).toString('base64');
+        await this.login(this.form);
+        await this.$router.push(this.handleRoute())
+        // this.$router.push('/')
+      },
+      randomCaptchaId() {
+        // 生成随机码
+        return Math.floor(Math.random() * 999999)
+      },
+      async getCodeURL() {
+        // 获取验证码图片
+        this.showPic=false;
+        let captchaId = this.randomCaptchaId()
+        let res = await codeURL({ captchaId })
+        this.codeURL = `data:image/png;base64,${res}`
+        this.showPic=true;
+      },
+    },
   }
-
-  const randomCaptchaId = () =>{
-    // 生成随机码
-    return Math.floor(Math.random() * 999999)
-  }
-
-  const getCodeURL = async() => {
-    // 获取验证码图片
-    showPic.value=false;
-    let captchaId = randomCaptchaId()
-    let res = await codeURL({ captchaId })
-    codeSrc.value = `data:image/png;base64,${res}`
-    showPic.value=true;
-  }
-  
 </script>
 <style lang="less">
   .login-container {

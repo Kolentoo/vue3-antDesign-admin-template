@@ -29,6 +29,7 @@ export const asyncRoutes = [
       title: '首页',
       icon: 'home-4-line',
       affix: true,
+      permission: ['/agentManagement'],
     },
     children: [
       {
@@ -39,6 +40,7 @@ export const asyncRoutes = [
           title: '首页',
           icon: 'home-4-line',
           affix: true,
+          permission: ['/agentManagement'],
         },
       },
     ],
@@ -51,6 +53,7 @@ export const asyncRoutes = [
     meta: {
       title: '组件',
       icon: 'apps-line',
+      permission: ['/agentManagement'],
     },
     children: [
       {
@@ -60,6 +63,7 @@ export const asyncRoutes = [
         meta: {
           title: '表格',
           icon: 'table-2',
+          permission: ['/agentManagement'],
         },
       },
       {
@@ -69,6 +73,7 @@ export const asyncRoutes = [
         meta: {
           title: '图标',
           icon: 'remixicon-line',
+          permission: ['/agentManagement11'],
         },
       },
     ],
@@ -89,6 +94,7 @@ export const asyncRoutes = [
         meta: {
           title: '动态路由测试',
           icon: 'test-tube-line',
+          permission: ['/agentManagement'],
         },
       },
     ],

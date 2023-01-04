@@ -98,15 +98,21 @@ const actions = {
       message.error(`验证失败，请重新登录`)
       return false
     }
-    let { username, avatar, roles, ability } = result.data
+    let { username, avatar, roles, ability,currentCompany,currentUser,currentUserTag,permissions } = result.data
     console.log('roles',roles)
     if (username && roles && Array.isArray(roles)) {
       console.log('ceshi')
       dispatch('acl/setRole', roles, { root: true })
-      if (ability && ability.length > 0)
+      if (ability && ability.length > 0){
         dispatch('acl/setAbility', ability, { root: true })
+      }
+        
       commit('setUsername', username)
       commit('setAvatar', avatar)
+
+      if (permissions) {
+        dispatch('acl/setPermission', permissions, {root: true})
+      }
     } else {
       message.error('用户信息接口异常')
     }

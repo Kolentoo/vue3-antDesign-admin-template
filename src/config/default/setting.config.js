@@ -58,7 +58,7 @@ const setting = {
   //intelligence（前端导出路由）和all（后端导出路由）两种方式
   authentication: 'intelligence',
   //是否开启roles字段进行角色权限控制（如果是all模式后端完全处理角色并进行json组装，可设置false不处理路由中的roles字段）
-  rolesControl: false,
+  rolesControl: true,
   //vertical gallery comprehensive common布局时是否只保持一个子菜单的展开
   uniqueOpened: false,
   //vertical布局时默认展开的菜单path，使用逗号隔开建议只展开一个

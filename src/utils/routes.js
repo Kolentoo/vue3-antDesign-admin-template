@@ -2,6 +2,7 @@ import router from '@/router'
 import path from 'path'
 import { rolesControl } from '@/config'
 import { isExternal } from '@/utils/validate'
+import { hasPermission } from '@/utils/permission'
 import { hasRole } from '@/utils/hasRole'
 
 /**
@@ -50,20 +51,51 @@ export function convertRouter(constantRoutes) {
  * @returns {[]}
  */
 export function filterRoutes(routes, baseUrl = '/') {
+  // 根据permission过滤菜单栏权限
+  console.log('rolesControl',rolesControl);
+  console.log('routesroutesroutes',routes);
+  console.log('hasPermission',hasPermission);
   return routes
-    .filter((route) => {
-      if (route.meta && route.meta.roles)
-        return !rolesControl || hasRole(route.meta.roles)
-      else return true
-    })
+    .filter((route) =>
+      rolesControl && route.meta && route.meta.permission
+      ? hasPermission(route.meta.permission)
+      : true
+    )
     .map((route) => {
-      if (route.path !== '*' && !isExternal(route.path))
-        route.path = path.resolve(baseUrl, route.path)
-      route.fullPath = route.path
-      if (route.children)
-        route.children = filterRoutes(route.children, route.fullPath)
+      console.log(121212121212,route)
+      route = { ...route }
+      route.path =
+        route.path !== '*' && !isExternal(route.path)
+          ? resolve(baseUrl, route.path)
+          : route.path
+      if (route.children) {
+        route.children = filterRoutes(route.children, route.path)
+        route.childrenNameList = route.children.flatMap(
+          (_) => _.childrenNameList
+        )
+        if (!route.redirect)
+          route.redirect = route.children[0].redirect
+            ? route.children[0].redirect
+            : route.children[0].path
+      } else route.childrenNameList = [route.name]
+      console.log('过滤后的route',route)
       return route
     })
+
+    // 根据角色过滤菜单栏权限
+    // .filter((route) => {
+    //   if (route.meta && route.meta.roles)
+    //     return !rolesControl || hasRole(route.meta.roles)
+    //   else return true
+    // })
+    // .map((route) => {
+    //   if (route.path !== '*' && !isExternal(route.path))
+    //     route.path = path.resolve(baseUrl, route.path)
+    //   route.fullPath = route.path
+    //   if (route.children)
+    //     route.children = filterRoutes(route.children, route.fullPath)
+    //   return route
+    // })
 }
 
 /**

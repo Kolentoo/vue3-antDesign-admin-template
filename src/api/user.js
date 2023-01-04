@@ -2,6 +2,7 @@ import request from '@/utils/request'
 import { tokenName } from '@/config'
 import { loginRSA } from '@/config'
 
+// 获取验证码
 export async function codeURL(data) {
   return request({
       url: '/api/session/kaptcha',
@@ -10,6 +11,7 @@ export async function codeURL(data) {
   })
 }
 
+// 登录
 export async function login(data) {
   // 是否开启RSA加密 默认FALSE
   if (loginRSA) {
@@ -22,13 +24,22 @@ export async function login(data) {
   })
 }
 
+// 获取用户信息
 export function getUserData() {
   return request({
       url: '/api/session/userInfo',
       method: 'get',
-      
   })
 }
+
+// 退出登录
+export function logout() {
+  return request({
+      url: '/api/session/logout',
+      method: 'get',
+  })
+}
+
 
 
 
@@ -52,12 +63,12 @@ export async function socialLogin(data) {
 //   })
 // }
 
-export function logout() {
-  return request({
-    url: '/logout',
-    method: 'post',
-  })
-}
+// export function logout() {
+//   return request({
+//     url: '/logout',
+//     method: 'post',
+//   })
+// }
 
 export function register() {
   return request({

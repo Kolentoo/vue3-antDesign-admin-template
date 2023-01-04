@@ -1,12 +1,12 @@
 <template>
   <div class="login-container">
     <a-row>
-      <a-col :xs="0" :md="0" :sm="12" :lg="14" :xl="16"></a-col>
-      <a-col :xs="24" :sm="24" :md="12" :lg="10" :xl="6">
+      <a-col :xs="0" :md="0" :sm="12" :lg="14" :xl="14"></a-col>
+      <a-col :xs="24" :sm="24" :md="12" :lg="10" :xl="8">
         
         <div class="login-container-form">
-          <div class="login-container-hello">hello!</div>
-          <div class="login-container-title">欢迎来到 {{ title }}</div>
+          <div class="login-container-hello"></div>
+          <div class="login-container-title">欢迎登录 {{ title }}</div>
           <a-form :model="form" @submit="handleSubmit" @submit.prevent>
             <a-form-item>
               <a-input v-model:value="form.username" placeholder="请输入用户名">
@@ -44,7 +44,7 @@
 
             </a-form-item>
             
-            <a-form-item>
+            <a-form-item class="login-btn">
               <a-button
                 type="primary"
                 html-type="submit"
@@ -106,6 +106,8 @@
     mounted() {
       this.form.username='15026753453';
       this.form.password='123456'
+
+      console.log('this.redirect',this.redirect);
     },
     methods: {
       ...mapActions({
@@ -146,25 +148,26 @@
     background: url('~@/assets/login_images/login_background.png');
     background-size: cover;
     &-form {
-      width: calc(100% - 40px);
-      // height: 380px;
-      padding: 4vh;
+      width: calc(75%);
+      padding: 6vh;
       margin-top: calc((100vh - 480px) / 2);
       margin-right: 20px;
       margin-left: 20px;
-      background: url('~@/assets/login_images/login_form.png');
-      background-size: 100% 100%;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px 0 rgba(7, 17, 27, 0.06);
+
+      background: #FFFFFF;
+      box-shadow: 0px 1px 10px 0px rgba(217,222,233,0.7);
+      border-radius: 12px;
     }
     &-hello {
       font-size: 32px;
-      color: #fff;
+      color: #484F5E;
     }
     &-title {
       margin-bottom: 30px;
-      font-size: 20px;
-      color: #fff;
+      font-size: 24px;
+      color: #484F5E;
+      text-align: center;
+      font-weight: bold;
     }
     &-tips {
       position: fixed;
@@ -197,4 +200,6 @@
     z-index:10;
     cursor:pointer;
   }
+
+  .login-btn {margin-top: 50px;}
 </style>

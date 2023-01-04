@@ -38,7 +38,9 @@ const actions = {
 
     // 执行设置路由方法 提交路由参数
     commit('setRoutes', finallyRoutes)
+    console.log('...finallyRoutes',...finallyRoutes)
     return [...asyncRoutes]
+
   },
   /**
    * @author kolento

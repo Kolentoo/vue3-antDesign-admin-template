@@ -71,6 +71,7 @@ const actions = {
   async login({ commit }, userInfo) {
 
     const { data } = await login(userInfo)
+    console.log('datadatadata',data)
     const accessToken = data['token'];
 
     if (accessToken) {
@@ -91,15 +92,18 @@ const actions = {
    * @returns
    */
   async getUserInfo({ commit, dispatch, state }) {
-    console.log('getUserInfo');
-    const { data } = await getUserData(state.accessToken)
-    console.log('data1234',data);
-    if (!data) {
-      // message.error(`验证失败，请重新登录...`)
-      return false
-    }
-    let { username, avatar, roles, ability } = data
+    const result = await getUserData(state.accessToken)
+    console.log('resultresult',result);
+    console.log('resultresult',result.data);
+    // if (!data) {
+    //   message.error(`验证失败，请重新登录...`)
+    //   return false
+    // }
+    console.log(22223333)
+    let { username, avatar, roles, ability } = result.data
+    console.log('roles',roles)
     if (username && roles && Array.isArray(roles)) {
+      console.log('ceshi')
       dispatch('acl/setRole', roles, { root: true })
       if (ability && ability.length > 0)
         dispatch('acl/setAbility', ability, { root: true })

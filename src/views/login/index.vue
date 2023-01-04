@@ -7,33 +7,33 @@
         <div class="login-container-form">
           <div class="login-container-hello"></div>
           <div class="login-container-title">欢迎登录 {{ title }}</div>
-          <a-form :model="form" @submit="handleSubmit" @submit.prevent :rules="loginRules">
-            <a-form-item>
+          <a-form :model="form" @finish="handleSubmit" @submit.prevent :rules="loginRules" @finishFailed="onFinishFailed">
+
+            <a-form-item name="username">
               <a-input v-model:value="form.username" placeholder="请输入用户名">
                 <template v-slot:prefix>
                   <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
                 </template>
               </a-input>
             </a-form-item>
-            <a-form-item>
+
+            <a-form-item name="password">
               <a-input
                 v-model:value="form.password"
                 type="password"
-                placeholder="请输入密码"
-              >
+                placeholder="请输入密码" >
                 <template v-slot:prefix>
                   <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
                 </template>
               </a-input>
-              
             </a-form-item>
-            <a-form-item class="code-box">
 
+            <a-form-item class="code-box" name="captchaId">
               <a-input
                 v-model:value="form.captchaId"
                 type="text"
-                placeholder="请输入验证码"
-              >
+                maxlength="4"
+                placeholder="请输入验证码" >
                 <template v-slot:prefix>
                   <verified-outlined style="color: rgba(0, 0, 0, 0.25)" />
                 </template>
@@ -47,9 +47,7 @@
             <a-form-item class="login-btn">
               <a-button
                 type="primary"
-                html-type="submit"
-                :disabled="form.username === '' || form.password === ''"
-              >
+                html-type="submit">
                 登录
               </a-button>
             </a-form-item>
@@ -74,13 +72,13 @@
 
   // 登录表单数据
   const form = reactive({
-    useranme:'',
+    username:'',
     password:'',
     captchaId:''
   })
 
-  form.username = '15026753453';
-  form.password = '123456'
+  // form.username = '15026753453';
+  // form.password = '123456'
   const codeSrc = ref('');
   const showPic = ref('');
 
@@ -92,29 +90,43 @@
   logo.value = store.getters['settings/logo'];
 
   // 表单验证
-  let validatePass = async (_rule, value) => {
+  let validateUsername = async (_rule, value) => {
     if (value === '') {
-      return Promise.reject('Please input the password');
+      return Promise.reject('请输入用户名');
     } else {
-      if (formState.checkPass !== '') {
-        formRef.value.validateFields('checkPass');
+      return Promise.resolve();
+    }
+  };
+  let validatePsd = async (_rule, value) => {
+    if (value === '') {
+      return Promise.reject('请输入密码');
+    } else {
+      if(value.length<6){
+        return Promise.reject('密码不能少于6位');
       }
       return Promise.resolve();
     }
   };
+  let validateCaptchaId = async (_rule, value) => {
+    if (value === '') {
+      return Promise.reject('请输入验证码');
+    } else {
+      return Promise.resolve();
+    }
+  };
 
-  const rules = {
-    pass: [{
+  const loginRules = {
+    username: [{
       required: true,
-      validator: validatePass,
+      validator: validateUsername,
       trigger: 'change',
     }],
-    checkPass: [{
-      validator: validatePass,
+    password: [{
+      validator: validatePsd,
       trigger: 'change',
     }],
-    age: [{
-      validator: validatePass,
+    captchaId: [{
+      validator: validateCaptchaId,
       trigger: 'change',
     }],
   };
@@ -131,6 +143,10 @@
     await store.dispatch('user/login',form);
     // 路由跳转
     router.push('/')
+  }
+
+  const onFinishFailed = ()=>{
+    console.log('验证失败');
   }
 
   const randomCaptchaId = () =>{

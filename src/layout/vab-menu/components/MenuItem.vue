@@ -29,6 +29,7 @@
       handleLink() {
         const routePath = this.routeChildren.fullPath
         const target = this.routeChildren.meta.target
+        console.log('routePath',this.routeChildren)
         if (target === '_blank') {
           if (isExternal(routePath)) window.open(routePath)
           else if (this.$route.path !== routePath) window.open(routePath.href)

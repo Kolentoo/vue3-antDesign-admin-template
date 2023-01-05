@@ -29,18 +29,18 @@ export const asyncRoutes = [
       title: '首页',
       icon: 'home-4-line',
       affix: true,
-      permission: ['/agentManagement'],
+      permission: '/agentManagement',
     },
     children: [
       {
-        path: 'index',
+        path: '/index',
         name: 'Index',
         component: () => import('@/views/index'),
         meta: {
           title: '首页',
           icon: 'home-4-line',
           affix: true,
-          permission: ['/agentManagement'],
+          permission: '/agentManagement',
         },
       },
     ],
@@ -48,12 +48,11 @@ export const asyncRoutes = [
   {
     path: '/vab',
     component: Layout,
-    redirect: '/vab/table',
     alwaysShow: true,
     meta: {
       title: '组件',
       icon: 'apps-line',
-      permission: ['/agentManagement'],
+      permission: '/agentManagement',
     },
     children: [
       {
@@ -63,7 +62,7 @@ export const asyncRoutes = [
         meta: {
           title: '表格',
           icon: 'table-2',
-          permission: ['/agentManagement'],
+          permission: '/agentManagement',
         },
       },
       {
@@ -73,7 +72,7 @@ export const asyncRoutes = [
         meta: {
           title: '图标',
           icon: 'remixicon-line',
-          permission: ['/agentManagement11'],
+          permission: '/agentManagement',
         },
       },
     ],
@@ -85,18 +84,61 @@ export const asyncRoutes = [
     meta: {
       title: '动态路由测试',
       icon: 'test-tube-line',
+      permission: '/agentManagement',
     },
     children: [
       {
-        path: 'test',
+        path: '/test',
         name: 'Test',
         component: () => import('@/views/test'),
         meta: {
           title: '动态路由测试',
           icon: 'test-tube-line',
-          permission: ['/agentManagement'],
+          permission: '/agentManagement',
         },
       },
+      {
+        path: '/test234',
+        name: 'Test2',
+        component: () => import('@/views/test'),
+        meta: {
+          title: '动态路由测试222',
+          icon: 'test-tube-line',
+          permission: '/agentMa111nagement',
+        },
+      },
+    ],
+  },
+  {
+    path: '/machineLearn',
+    name: 'MachineLearn',
+    component: Layout,
+    meta: {
+      title: '前端测试',
+      icon: 'test-tube-line',
+      permission: '/machineLearn',
+    },
+    children: [
+      {
+        path: '/views/machineLearn/columnManage',
+        name: 'ColumnManage',
+        meta: {
+          title: '字段管理',
+          icon: 'test-tube-line',
+          permission: '/views/machineLearn/columnManage',
+        },
+        component: () => import('@/views/test'),
+      },
+      {
+        path: '/views/machineLearn/importBatch',
+        name: 'ImportBatch',
+        meta: {
+          title: '导入管理',
+          icon: 'test-tube-line',
+          permission: '/views/machineLearn/importBatch',
+        },
+        component: () => import('@/views/test'),
+      }
     ],
   },
   {

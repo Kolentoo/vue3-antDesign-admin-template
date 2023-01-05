@@ -77,8 +77,8 @@
     captchaId:''
   })
 
-  // form.username = '15026753453';
-  // form.password = '123456'
+  form.username = '15026753453';
+  form.password = '123456'
   const codeSrc = ref('');
   const showPic = ref('');
 
